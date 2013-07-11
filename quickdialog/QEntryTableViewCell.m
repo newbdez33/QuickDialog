@@ -93,8 +93,9 @@
                 if (width>titleWidth)
                     titleWidth = width;
             }
+            
             if ([el isKindOfClass:[QRadioItemElement class]]) {
-                titleWidth = 200;   //TODO: QRadioItemElement need to be calculate
+                titleWidth = 200;   //TODO: QRadioItemElement没处理问题，By Jacky 临时解决
             }
         }
         _entryElement.parentSection.entryPosition = CGRectMake(titleWidth+20,10,totalWidth-titleWidth-20-extra, self.frame.size.height-20);
@@ -116,7 +117,12 @@
 
     _quickformTableView = tableView;
     _entryElement = element;
-    _textField.text = _entryElement.textValue;
+    //当数据传入为NSNumber时，需要将其转换
+    if (_entryElement.textValue != nil) {
+        _textField.text = [NSString stringWithFormat:@"%@",_entryElement.textValue];
+    }else{
+        _textField.text = @"";
+    }
     _textField.placeholder = _entryElement.placeholder;
     _textField.prefix = _entryElement.prefix;
     _textField.suffix = _entryElement.suffix;
@@ -128,7 +134,8 @@
     _textField.secureTextEntry = _entryElement.secureTextEntry;
     _textField.clearsOnBeginEditing = _entryElement.clearsOnBeginEditing;
     _textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    _textField.textAlignment = _entryElement.appearance.entryAlignment;
+    _textField.textAlignment = _entryElement.appearance.valueAlignment;
+
 
     _textField.returnKeyType = _entryElement.returnKeyType;
     _textField.enablesReturnKeyAutomatically = _entryElement.enablesReturnKeyAutomatically;
@@ -281,6 +288,7 @@
     [self endEditing:YES];
     [self endEditing:NO];
     [_textField resignFirstResponder];
+
     [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
 
     if(_entryElement && _entryElement.delegate && [_entryElement.delegate respondsToSelector:@selector(QEntryMustReturnForElement:andCell:)]){

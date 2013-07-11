@@ -17,9 +17,8 @@
         self.items = @[
                 @[@"Black", [UIColor blackColor]],
                 @[@"White", [UIColor whiteColor]],
-                @[@"Gray", [UIColor grayColor]],
-                @[@"Blue",  [UIColor blueColor]],
-                @[@"Red",  [UIColor redColor]],
+                @[@"Blue", [UIColor grayColor]],
+                @[@"Red",  [UIColor blueColor]],
                 @[@"Green", [UIColor greenColor]],
                 @[@"Yellow", [UIColor yellowColor]],
                 @[@"Purple", [UIColor purpleColor]],
@@ -45,7 +44,7 @@
 }
 
 - (UIImage *)getImageFromItem:(NSArray *)selectedValue {
-    id color = [selectedValue objectAtIndex:1];
+    id color = [[selectedValue objectAtIndex:1] description];
     if ([color isKindOfClass:[UIColor class]])
         return [color imageByDrawingCircleOfColor];
     if ([color isKindOfClass:[NSString class]])

@@ -18,11 +18,13 @@
 @implementation QTextElement
 
 @synthesize text = _text;
+@synthesize font = _font;
 @synthesize color = _color;
 
 
 - (QTextElement *)init {
    self = [super init];
+    _font = [UIFont systemFontOfSize:14];
     _color = [UIColor blackColor];
     return self;
 }
@@ -44,10 +46,10 @@
 
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
     cell.textLabel.text = self.title;
-    cell.detailTextLabel.font = self.appearance.valueFont;
+    cell.detailTextLabel.font = _font;
     cell.detailTextLabel.textColor = _color;
     cell.detailTextLabel.text = _text;
-
+    
     return cell;
 }
 
@@ -58,8 +60,8 @@
         return [super getRowHeightForTableView:tableView];
     }
     CGSize constraint = CGSizeMake(tableView.frame.size.width-(tableView.root.grouped ? 40.f : 20.f), 20000);
-    CGSize  size= [_text sizeWithFont:self.appearance.valueFont constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-	CGFloat predictedHeight = size.height + 40.0f;
+    CGSize  size= [_text sizeWithFont:_font constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+	CGFloat predictedHeight = size.height + 20.0f;
     if (self.title!=nil)
         predictedHeight+=30;
 	return (_height >= predictedHeight) ? _height : predictedHeight;

@@ -18,6 +18,7 @@
 
 @implementation QRadioElement {
     QSection *_internalRadioItemsSection;
+    NSObject *_selectedValue;
 }
 
 @synthesize selected = _selected;
@@ -47,10 +48,19 @@
     [self createElements];
 }
 
--(NSObject *)selectedValue {
-    if (_selected<0 || _selected>=_values.count)
-        return nil;
+- (void)setValues:(NSArray *)values {
+    _values = values;
+    if (_selectedValue!=nil) {
+        [self setSelectedValue:_selectedValue];
+    }else {
+        self.selected = -1;
+    }
+}
 
+-(NSObject *)selectedValue {
+    if (_selected==-1 || _selected >= _values.count) {
+        return nil;
+    }
     return [_values objectAtIndex:(NSUInteger) _selected];
 }
 
@@ -59,6 +69,7 @@
         self.selected = [(NSNumber *)aSelected integerValue];
     } else {
         self.selected = [_values indexOfObject:aSelected];
+        _selectedValue = aSelected;
     }
 
 }
@@ -90,7 +101,7 @@
 
 
 -(void)setSelectedItem:(id)item {
-    if (self.items==nil || item==nil)
+    if (self.items==nil)
         return;
     self.selected = [self.items indexOfObject:item];
 }
